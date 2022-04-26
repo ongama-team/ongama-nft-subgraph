@@ -1,0 +1,28 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFT
+    network: mumbai
+    source:
+      address: "0xf2a94BDE9c04B4e15B493BA8aa04BD64b26bde45"
+      abi: NFT
+      startBlock: 25957921
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Minted
+        - NftListStatus
+        - PriceUpdate
+        - Purchase
+        - Transfer
+      abis:
+        - name: NFT
+          file: ./abis/NFT.json
+      eventHandlers:
+        - event: Minted(indexed address,uint256,uint256,string)
+          handler: handleNFTCreation
+      file: ./src/mapping.ts

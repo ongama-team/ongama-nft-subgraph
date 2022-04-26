@@ -1,0 +1,50 @@
+
+type User @entity {
+  id: ID!
+  creations: [NFT!] @derivedFrom(field: "creator")
+  collections: [NFT!] @derivedFrom(field: "owner")
+  sales: [NFTSale!] @derivedFrom(field: "seller")
+}
+
+type NFT @entity {
+  id: ID!
+  owner: User! 
+  creator: User!
+  price: BigInt! 
+  tokenID: BigInt! 
+  tokenUri: String! 
+  txHash: Bytes!
+  actitity: [Activity!] @derivedFrom(field: "nft")
+  sales: [NFTSale!] @derivedFrom(field: "nft")
+}
+
+type NFTSale @entity {
+  id: ID!
+  nft: NFT
+  price: BigInt!
+  seller: User
+  buyer: User
+  txHash: Bytes!
+}
+
+type Activity @entity {
+  id: ID!
+  nft: NFT
+  type: ActivityType!
+  from: User # null on MINT
+  to: User # null on LISTED
+  txHash: Bytes!
+  price: BigInt # null on TRANSFER
+  timestamp: BigInt!
+}
+
+
+enum ActivityType {
+  MINT
+  SALE
+  LISTED
+  PRICE UPDATE
+  TRANSFER
+}
+
+

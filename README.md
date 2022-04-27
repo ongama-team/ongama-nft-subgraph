@@ -15,4 +15,5 @@ To use a version of contract abis that are not published to npm yet use the foll
 
 In the ongama-nft-contract repo:
 1. Run `yarn compile` to generate the contract abi, which will be located under build/contracts/NFT.json
+2. Create abis folder in the project root directory and paste the NFT.json file inside
 

@@ -26,7 +26,5 @@ yarn-error.log*
 
 .idea
 data.txt
-
-abis
 generated/
 

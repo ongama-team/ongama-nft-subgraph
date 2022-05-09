@@ -25,4 +25,6 @@ dataSources:
       eventHandlers:
         - event: Minted(indexed address,uint256,uint256,string)
           handler: handleNFTCreation
+        - event: PriceUpdate(indexed address, uint, uint, uint)
+          handler: handleNFTPriceUpdate
       file: ./src/mapping.ts

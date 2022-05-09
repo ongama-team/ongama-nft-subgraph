@@ -1,12 +1,12 @@
 import {
   Minted as MintedEvent,
-  NftListStatus as NftListStatusEvent,
   PriceUpdate as PriceUpdateEvent,
+  NftListStatus as NftListStatusEvent,
   Purchase as PurchaseEvent,
   Transfer as TransferEvent,
 } from "../generated/NFT/NFT";
 import { NFT, Activity } from "../generated/schema";
-import { getOrCreateUser } from "./util";
+import { getOrCreateUser, getNFTByID } from "./util";
 
 export function handleNFTCreation(event: MintedEvent): void {
   let nft = new NFT(
@@ -20,10 +20,33 @@ export function handleNFTCreation(event: MintedEvent): void {
   nft.txHash = event.transaction.hash;
   nft.save();
 
-  let activity = new Activity(event.transaction.hash.toHex() + "-" + nft.id);
+  let activity = new Activity(`${event.transaction.hash.toHex()}-${nft.id}`);
   activity.nft = nft.id;
   activity.type = "MINT";
   activity.to = getOrCreateUser(event.params.minter).id;
+  activity.price = nft.price;
+  activity.timestamp = event.block.timestamp;
+  activity.txHash = event.transaction.hash;
+  activity.save();
+
+}
+
+/**
+ * Handles NFT price update
+ * @param { PriceUpdateEvent } event - The emitted event for price update
+ */
+export function handleNFTPriceUpdate(event: PriceUpdateEvent): void {
+  let nft = getNFTByID(event.params.nftID.toString());
+
+  if (!nft) return;
+
+  nft.price = event.params.newPrice;
+  nft.save();
+
+  let activity = new Activity(`${event.transaction.hash.toHex()}-${nft.id}`);
+  activity.nft = nft.id;
+  activity.type = "PRICE UPDATE";
+  activity.to = getOrCreateUser(event.params.owner).id;
   activity.price = nft.price;
   activity.timestamp = event.block.timestamp;
   activity.txHash = event.transaction.hash;

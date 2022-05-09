@@ -1,6 +1,5 @@
 import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { Activity } from "../generated/schema";
-import { User, NFT } from "../generated/schema";
+import { User, NFT, Activity } from "../generated/schema";
 
 export function getOrCreateUser(address: Bytes): User {
   return getOrCreateUserFromString(address.toHex());

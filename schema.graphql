@@ -43,8 +43,6 @@ enum ActivityType {
   MINT
   SALE
   LISTED
-  PRICE UPDATE
+  PRICE_UPDATE
   TRANSFER
 }
-
-

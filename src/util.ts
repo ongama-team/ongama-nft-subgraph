@@ -22,3 +22,13 @@ export function getOrCreateUserFromString(address: string): User {
 export function getNFTByID(id: string): NFT | null {
   return NFT.load(id);
 }
+
+/* eslint-disable */
+export function padWithZeroes(
+  str: string,
+  length: number = 20,
+  prefix: string = ""
+): string {
+  /* eslint-enable */
+  return "0x".concat(prefix).concat(str.padStart(length as i32, "0"));
+}

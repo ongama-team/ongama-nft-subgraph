@@ -6,12 +6,10 @@ import {
   Transfer as TransferEvent,
 } from "../generated/NFT/NFT";
 import { NFT, Activity } from "../generated/schema";
-import { getOrCreateUser, getNFTByID } from "./util";
+import { getOrCreateUser, getNFTByID, padWithZeroes } from "./util";
 
 export function handleNFTCreation(event: MintedEvent): void {
-  let nft = new NFT(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  );
+  let nft = new NFT(padWithZeroes(event.params.nftID.toString(), 20));
   nft.owner = getOrCreateUser(event.params.minter).id;
   nft.creator = getOrCreateUser(event.params.minter).id;
   nft.price = event.params.price;
@@ -28,7 +26,6 @@ export function handleNFTCreation(event: MintedEvent): void {
   activity.timestamp = event.block.timestamp;
   activity.txHash = event.transaction.hash;
   activity.save();
-
 }
 
 /**
@@ -45,7 +42,7 @@ export function handleNFTPriceUpdate(event: PriceUpdateEvent): void {
 
   let activity = new Activity(`${event.transaction.hash.toHex()}-${nft.id}`);
   activity.nft = nft.id;
-  activity.type = "PRICE UPDATE";
+  activity.type = "PRICE_UPDATE";
   activity.to = getOrCreateUser(event.params.owner).id;
   activity.price = nft.price;
   activity.timestamp = event.block.timestamp;

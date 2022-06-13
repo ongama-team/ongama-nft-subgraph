@@ -6,7 +6,7 @@ dataSources:
     name: NFT
     network: mumbai
     source:
-      address: "0xf2a94BDE9c04B4e15B493BA8aa04BD64b26bde45"
+      address: "0xB08347548b9DC9B1211D37913CE0f305FF477AcE"
       abi: NFT
       startBlock: 25957921
     mapping:
@@ -25,6 +25,6 @@ dataSources:
       eventHandlers:
         - event: Minted(indexed address,uint256,uint256,string)
           handler: handleNFTCreation
-        - event: PriceUpdate(indexed address, uint, uint, uint)
+        - event: PriceUpdate(indexed address,uint256,uint256,uint256)
           handler: handleNFTPriceUpdate
       file: ./src/mapping.ts

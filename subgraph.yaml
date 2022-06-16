@@ -27,4 +27,6 @@ dataSources:
           handler: handleNFTCreation
         - event: PriceUpdate(indexed address,uint256,uint256,uint256)
           handler: handleNFTPriceUpdate
+        - event: NftListStatus(indexed address,uint256,bool)
+          handler: handleNftListStatus
       file: ./src/mapping.ts

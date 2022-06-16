@@ -14,7 +14,8 @@ type NFT @entity {
   tokenID: BigInt! 
   tokenUri: String! 
   txHash: Bytes!
-  actitity: [Activity!] @derivedFrom(field: "nft")
+  isListed: Boolean!
+  activities: [Activity!] @derivedFrom(field: "nft")
   sales: [NFTSale!] @derivedFrom(field: "nft")
 }
 

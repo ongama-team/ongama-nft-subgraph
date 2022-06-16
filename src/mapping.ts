@@ -16,6 +16,7 @@ export function handleNFTCreation(event: MintedEvent): void {
   nft.tokenID = event.params.nftID;
   nft.tokenUri = event.params.uri;
   nft.txHash = event.transaction.hash;
+  nft.isListed = true;
   nft.save();
 
   let activity = new Activity(`${event.transaction.hash.toHex()}-${nft.id}`);
@@ -49,3 +50,26 @@ export function handleNFTPriceUpdate(event: PriceUpdateEvent): void {
   activity.txHash = event.transaction.hash;
   activity.save();
 }
+
+
+/**
+ * Handles NFT list update
+ * @param { NftListStatusEvent } event - The emitted event for price update
+ */
+export function handleNftListStatus(event: NftListStatusEvent): void {
+  let nft = getNFTByID(event.params.nftID.toString());
+  if (!nft) return;
+  nft.isListed = event.params.isListed;
+  nft.save();
+
+  let activity = new Activity(`${event.transaction.hash.toHex()}-${nft.id}`);
+  activity.nft = nft.id;
+  activity.type = "LISTED";
+  activity.from = getOrCreateUser(event.params.owner).id;
+  activity.to = null;
+  activity.price = nft.price;
+  activity.timestamp = event.block.timestamp;
+  activity.txHash = event.transaction.hash;
+  activity.save();
+}
+
